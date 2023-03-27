@@ -1,0 +1,13 @@
+{
+  "id": "feedbackRESTApp",
+  "version": "0.0.1",
+  "name": "RESTApp boilerplate",
+  "author": "My Company",
+  "description": "A RESTApp boilerplate",
+  "helpUrl": "https://example.com/restapps",
+  "type": "RESTApp",
+  "bundled": true,
+  "storage": {
+    "collectionDataStore": "feedback"
+  }
+}
