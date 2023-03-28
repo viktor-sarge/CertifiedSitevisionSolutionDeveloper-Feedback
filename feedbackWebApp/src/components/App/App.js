@@ -7,26 +7,20 @@ import requester from "@sitevision/api/client/requester";
 import router from "@sitevision/api/common/router";
 
 const App = ({ currentVersion }) => {
-    console.log(`Online/offline ${currentVersion}`)
     const [feedbackSent, setFeedbackSent] = useState(false);
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
+    const handleSubmit = (text) => {
         requester["doPost"]({
             url: router.getStandaloneUrl("/feedback"),
-            data: {article: "BLORB"}
+            data: {feedback: text}
         }).then(()=>{
-            // setLike(!like);
-            console.log("Post requester ran")
+            // Visuell bekräftelse genom en toast
+            toasts.publish({ 
+                message: `Skickat.`, 
+                type: "success", 
+                ttl: 3, 
+           }); 
         })
-
-        
-        toasts.publish({ 
-            message: `Skickat.`, 
-            type: "success", 
-            ttl: 3, 
-       }); 
-        setFeedbackSent(true);
+        setFeedbackSent(true); // Boolean för vilket gränssnitt som skall visas
     }
     return (
         currentVersion 
