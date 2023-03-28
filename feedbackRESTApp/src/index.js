@@ -5,7 +5,7 @@ import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
 router.get('/myroute', (req, res) => {
     const feedbackStorage = storage.getCollectionDataStore("feedback");
     const post = feedbackStorage.add({
-        feedback: "Bara testar",
+        feedback: "TRiggar detta från index js i webappen",
         page: portletContextUtil.getCurrentPage().getIdentifier(),
         current: true
     })

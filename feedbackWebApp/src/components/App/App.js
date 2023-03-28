@@ -5,13 +5,12 @@ import toasts from "@sitevision/api/client/toasts";
 import FeedbackForm from './FeedbackForm';
 
 const App = ({ currentVersion }) => {
-
     console.log(`Online/offline ${currentVersion}`)
     const [feedbackSent, setFeedbackSent] = useState(false);
     const handleSubmit = (e) => {
         e.preventDefault();
         toasts.publish({ 
-            message: "Feedback inskickad", 
+            message: `Skickat.`, 
             type: "success", 
             ttl: 3, 
        }); 
