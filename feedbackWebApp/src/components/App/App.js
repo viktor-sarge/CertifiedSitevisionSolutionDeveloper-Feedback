@@ -6,7 +6,9 @@ import FeedbackForm from './FeedbackForm';
 import requester from "@sitevision/api/client/requester";
 import router from "@sitevision/api/common/router";
 
-const App = ({ currentVersion }) => {
+const App = ({ currentVersion, anonymous }) => {
+    if(anonymous) return; // Guard clause som avslutar direkt om användaren är oinloggad
+
     const [feedbackSent, setFeedbackSent] = useState(false);
     const handleSubmit = (text) => {
         requester["doPost"]({

@@ -5,16 +5,18 @@ import App from './components/App';
 import versionUtil from '@sitevision/api/server/VersionUtil';
 import storage  from '@sitevision/api/server/storage';
 import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
-import mailUtil from '@sitevision/api/server/MailUtil';  
+import mailUtil from '@sitevision/api/server/MailUtil';
+import systemUserUtil from "@sitevision/api/server/SystemUserUtil";
 
 const offlineVersion = versionUtil.OFFLINE_VERSION; // Editläge === 0
 const onlineVersion = versionUtil.ONLINE_VERSION; // Visningsläge === 1
 const currentVersion = versionUtil.getCurrentVersion(); // Plocka ut aktuell vy
 
+const anonymous = systemUserUtil.isAnonymous();
+console.log('Anonym' + anonymous);
 
 // Egen route för att posta feedback - anropas från App.js
 router.post('/feedback', (req, res) => {
-
     const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
     const currentUser = portletContextUtil.getCurrentUser();
 
@@ -50,8 +52,8 @@ router.get('/feedback', (req, res) => {
 
 
 router.get('/', (req, res) => {
-    res.agnosticRender(renderToString(<App currentVersion={currentVersion} />), {
-        currentVersion
+    res.agnosticRender(renderToString(<App currentVersion={currentVersion} anonymous={anonymous} />), {
+        currentVersion, anonymous
     });
 });
 
