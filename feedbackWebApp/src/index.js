@@ -14,12 +14,14 @@ const currentVersion = versionUtil.getCurrentVersion(); // Plocka ut aktuell vy
 router.post('/feedback', (req, res) => {
 
   const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
+  const currentUser = portletContextUtil.getCurrentUser();
 
   // Lägg till feedback från App.js, aktuell sidas ID och booelan för current till storage. Tidsstämpel skapas automatiskt
   const post = feedbackStorage.add({
       feedback: req.params.feedback,
       page: portletContextUtil.getCurrentPage().getIdentifier(),
-      current: true
+      current: true,
+      user: String(currentUser),
   })
   feedbackStorage.instantIndex(post.dsid);  // Trigga indexering av posten
   res.json({post});  // Svaret skickas med
