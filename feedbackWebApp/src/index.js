@@ -13,8 +13,7 @@ const onlineVersion = versionUtil.ONLINE_VERSION; // Visningsläge === 1
 const currentVersion = versionUtil.getCurrentVersion(); // Plocka ut aktuell vy
 
 const anonymous = systemUserUtil.isAnonymous();
-console.log('Anonym' + anonymous);
-
+const currentPageID = portletContextUtil.getCurrentPage().getIdentifier();
 // Egen route för att posta feedback - anropas från App.js
 router.post('/feedback', (req, res) => {
     const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
@@ -23,7 +22,7 @@ router.post('/feedback', (req, res) => {
     // Lägg till feedback från App.js, aktuell sidas ID och booelan för current till storage. Tidsstämpel skapas automatiskt
     const post = feedbackStorage.add({
         feedback: req.params.feedback,
-        page: portletContextUtil.getCurrentPage().getIdentifier(),
+        page: currentPageID,
         current: true,
         user: String(currentUser),
     })
@@ -46,8 +45,8 @@ router.post('/feedback', (req, res) => {
 // Egen route för att posta feedback - anropas från App.js
 router.get('/feedback', (req, res) => {
     const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
-
-    res.json({post});  // Svaret skickas med
+    const feedbackEntries = feedbackStorage.find(`ds.analyzed.page:${currentPageID}`,100).toArray(); 
+    res.json({feedbackEntries});  // Svaret skickas med
 });
 
 
