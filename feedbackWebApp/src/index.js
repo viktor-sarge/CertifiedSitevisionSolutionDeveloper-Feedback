@@ -29,7 +29,7 @@ router.post('/feedback', (req, res) => {
 
   // Skicka mail när feedback skickats TODO: Plocka upp mail från config
   const mailBuilder = mailUtil.getMailBuilder();
-  const mailInput = "";
+  const mailInput = "viktor.sarge@regionhalland.se";
   const mail = mailBuilder
     .setSubject(`Feedback was published `)
     .setHtmlMessage(`Someone published published`)
