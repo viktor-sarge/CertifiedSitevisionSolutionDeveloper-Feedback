@@ -5,10 +5,12 @@ import App from './components/App';
 import versionUtil from '@sitevision/api/server/VersionUtil';
 import storage  from '@sitevision/api/server/storage';
 import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
+import mailUtil from '@sitevision/api/server/MailUtil';  
 
 const offlineVersion = versionUtil.OFFLINE_VERSION; // Editläge === 0
 const onlineVersion = versionUtil.ONLINE_VERSION; // Visningsläge === 1
 const currentVersion = versionUtil.getCurrentVersion(); // Plocka ut aktuell vy
+
 
 // Egen route för att posta feedback - anropas från App.js
 router.post('/feedback', (req, res) => {
@@ -24,6 +26,17 @@ router.post('/feedback', (req, res) => {
       user: String(currentUser),
   })
   feedbackStorage.instantIndex(post.dsid);  // Trigga indexering av posten
+
+  // Skicka mail när feedback skickats TODO: Plocka upp mail från config
+  const mailBuilder = mailUtil.getMailBuilder();
+  const mailInput = "";
+  const mail = mailBuilder
+    .setSubject(`Feedback was published `)
+    .setHtmlMessage(`Someone published published`)
+    .addRecipient(mailInput)
+    .build();
+  mail.send();
+
   res.json({post});  // Svaret skickas med
 });
 
