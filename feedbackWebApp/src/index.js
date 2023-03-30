@@ -6,6 +6,7 @@ import { renderToString } from 'react-dom/server';
 import App from './components/App';
 
 // Sitevision-specifika importer
+import appData from '@sitevision/api/server/appData';
 import mailUtil from '@sitevision/api/server/MailUtil';
 import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
 import router from '@sitevision/api/common/router';
@@ -40,7 +41,7 @@ router.post('/feedback', (req, res) => {
 
     // Skicka mail när feedback skickats TODO: Plocka upp mail från config
     const mailBuilder = mailUtil.getMailBuilder();
-    const mailInput = "viktor.sarge@regionhalland.se";
+    const mailInput = appData.get('email');
     const mail = mailBuilder
         .setSubject(`Feedback was published `)
         .setHtmlMessage(`Someone published published`)
