@@ -1,19 +1,29 @@
+// Basimporter
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
-import router from '@sitevision/api/common/router';
-import App from './components/App';
-import versionUtil from '@sitevision/api/server/VersionUtil';
-import storage  from '@sitevision/api/server/storage';
-import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
-import mailUtil from '@sitevision/api/server/MailUtil';
-import systemUserUtil from "@sitevision/api/server/SystemUserUtil";
 
+// Frontenddelen 
+import App from './components/App';
+
+// Sitevision-specifika importer
+import mailUtil from '@sitevision/api/server/MailUtil';
+import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
+import router from '@sitevision/api/common/router';
+import storage  from '@sitevision/api/server/storage';
+import systemUserUtil from "@sitevision/api/server/SystemUserUtil";
+import versionUtil from '@sitevision/api/server/VersionUtil';
+
+// Plocka upp om vi är i edit eller visningsläge
 const offlineVersion = versionUtil.OFFLINE_VERSION; // Editläge === 0
 const onlineVersion = versionUtil.ONLINE_VERSION; // Visningsläge === 1
 const currentVersion = versionUtil.getCurrentVersion(); // Plocka ut aktuell vy
 
+// Inloggad eller inte? Används i App.js för att stänga ute oinloggade
 const anonymous = systemUserUtil.isAnonymous();
+
+// ID för aktuell sida
 const currentPageID = portletContextUtil.getCurrentPage().getIdentifier();
+
 // Egen route för att posta feedback - anropas från App.js
 router.post('/feedback', (req, res) => {
     const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
@@ -42,18 +52,16 @@ router.post('/feedback', (req, res) => {
 });
 
 
-// Egen route för att posta feedback - anropas från App.js
+// Hämta sidans tidigare feedback. Vaktas av att App.js avslutar direkt om man inte är inloggad.
 router.get('/feedback', (req, res) => {
     const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
     const feedbackEntries = feedbackStorage.find(`ds.analyzed.page:${currentPageID}`,100).toArray(); 
     res.json({feedbackEntries});  // Svaret skickas med
 });
 
-
+// Appens standardentrypoint
 router.get('/', (req, res) => {
     res.agnosticRender(renderToString(<App currentVersion={currentVersion} anonymous={anonymous} />), {
         currentVersion, anonymous
     });
 });
-
-

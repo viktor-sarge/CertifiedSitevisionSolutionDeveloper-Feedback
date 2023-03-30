@@ -1,3 +1,9 @@
 {
-	"conventionalCommits.scopes": ["scaffolding", "data", "email", "auth"]
+	"conventionalCommits.scopes": [
+		"scaffolding",
+		"data",
+		"email",
+		"auth",
+		"comments"
+	]
 }

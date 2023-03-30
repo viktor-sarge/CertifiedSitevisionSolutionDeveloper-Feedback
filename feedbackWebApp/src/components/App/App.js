@@ -1,3 +1,4 @@
+// Grundläggande importer
 import * as React from 'react';
 import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
@@ -11,11 +12,14 @@ import router from "@sitevision/api/common/router";
 import toasts from "@sitevision/api/client/toasts"; 
 
 const App = ({ currentVersion, anonymous }) => {
-    if(anonymous) return; // Guard clause som avslutar direkt om användaren är oinloggad
+    // Avsluta direkt om användaren är oinloggad
+    if(anonymous) return; 
 
+    // States för om inskickat + tidigare feedbackposter
     const [feedbackSent, setFeedbackSent] = useState(false);
     const [previousFeedback, setPreviousFeedback] = useState([]);
 
+    // Slussa feedback från formulär till /feedback-routen i index.js
     const handleSubmit = (text) => {
         requester["doPost"]({
             url: router.getStandaloneUrl("/feedback"),
@@ -28,9 +32,10 @@ const App = ({ currentVersion, anonymous }) => {
                 ttl: 3, 
             }); 
         })
-        setFeedbackSent(true); // Boolean för vilket gränssnitt som skall visas
+        setFeedbackSent(true); // Styr vilket gränssnitt som visas
     }
 
+    // Ladda tidigare feedback från route i index.js
     useEffect(()=>{
         requester.doGet({
             url: router.getStandaloneUrl("/feedback"),
@@ -44,6 +49,7 @@ const App = ({ currentVersion, anonymous }) => {
         });
     }, [])
 
+    // Timestamps till klartexttid
     const formatDate = (unixTimestamp) => {
         const date = new Date(unixTimestamp);
         return date.toLocaleDateString("en-US", {
@@ -89,6 +95,7 @@ const App = ({ currentVersion, anonymous }) => {
     );
 };
 
+// Typa props
 App.propTypes = {
     currentVersion: PropTypes.number,
     anonymous: PropTypes.bool,
