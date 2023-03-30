@@ -2,13 +2,13 @@
   "id": "feedbackWebApp",
   "version": "0.0.1",
   "name": {
-    "en": "WebApp boilerplate"
+    "en": "Feedback WebApp"
   },
-  "author": "My Company",
+  "author": "Region Halland",
   "description": {
-    "en": "A WebApp boilerplate"
+    "en": "A WebApp that adds feedback functionality."
   },
-  "helpUrl": "https://example.com/webapps",
+  "helpUrl": "https://github.com/viktor-sarge/CertifiedSitevisionSolutionDeveloper-Feedback/issues",
   "type": "WebApp",
   "bundled": true,
   "requiredLibs": {

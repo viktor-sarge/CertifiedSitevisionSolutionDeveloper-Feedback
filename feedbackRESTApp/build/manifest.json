@@ -1,10 +1,10 @@
 {
   "id": "feedbackRESTApp",
   "version": "0.0.1",
-  "name": "RESTApp boilerplate",
-  "author": "My Company",
-  "description": "A RESTApp boilerplate",
-  "helpUrl": "https://example.com/restapps",
+  "name": "Feedback RESTApp",
+  "author": "Region Halland",
+  "description": "A RESTApp that's used to add feedback functionality",
+  "helpUrl": "https://github.com/viktor-sarge/CertifiedSitevisionSolutionDeveloper-Feedback/issues",
   "type": "RESTApp",
   "bundled": true,
   "storage": { "collectionDataStore": "feedback" }
