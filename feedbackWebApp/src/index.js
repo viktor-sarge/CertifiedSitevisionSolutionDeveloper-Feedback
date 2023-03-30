@@ -35,6 +35,7 @@ router.post('/feedback', (req, res) => {
         feedback: req.params.feedback,
         page: currentPageID,
         current: true,
+        timePosted: Date.now(),
         user: String(currentUser),
     })
     feedbackStorage.instantIndex(post.dsid);  // Trigga indexering av posten

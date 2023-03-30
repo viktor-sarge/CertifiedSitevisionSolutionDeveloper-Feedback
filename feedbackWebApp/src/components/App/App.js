@@ -51,6 +51,7 @@ const App = ({ currentVersion, anonymous }) => {
 
     // Timestamps till klartexttid
     const formatDate = (unixTimestamp) => {
+        if(!unixTimestamp) return '';
         const date = new Date(unixTimestamp);
         return date.toLocaleDateString("en-US", {
             day: "numeric",
@@ -80,7 +81,7 @@ const App = ({ currentVersion, anonymous }) => {
                                     {entry.feedback}
                                 </p>
                                 <p class="env-ui-text-caption">
-                                    {formatDate(entry.dstimestamp)}
+                                    {formatDate(entry.timePosted)}
                                 </p>
                                 {entry.current 
                                     ? <p class="env-ui-text-caption env-status-badge env-status-badge--active">Aktuell version</p> 

@@ -4,6 +4,7 @@
 		"data",
 		"email",
 		"auth",
-		"comments"
+		"comments",
+		"publish"
 	]
 }
