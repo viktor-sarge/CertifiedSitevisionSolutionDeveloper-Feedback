@@ -5,6 +5,8 @@
 		"email",
 		"auth",
 		"comments",
-		"publish"
+		"publish",
+		"timestamp",
+		"middleware"
 	]
 }

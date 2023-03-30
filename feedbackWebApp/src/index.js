@@ -9,6 +9,7 @@ import App from './components/App';
 import appData from '@sitevision/api/server/appData';
 import mailUtil from '@sitevision/api/server/MailUtil';
 import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
+import roleUtil from '@sitevision/api/server/RoleUtil';
 import router from '@sitevision/api/common/router';
 import storage  from '@sitevision/api/server/storage';
 import systemUserUtil from "@sitevision/api/server/SystemUserUtil";
@@ -22,8 +23,10 @@ const currentVersion = versionUtil.getCurrentVersion(); // Plocka ut aktuell vy
 // Inloggad eller inte? Används i App.js för att stänga ute oinloggade
 const anonymous = systemUserUtil.isAnonymous();
 
-// ID för aktuell sida
-const currentPageID = portletContextUtil.getCurrentPage().getIdentifier();
+// Referenser till aktuell sida, dess id och aktuell användare
+const currentPage = portletContextUtil.getCurrentPage();
+const currentPageID = currentPage.getIdentifier();
+const currentUser = portletContextUtil.getCurrentUser(); 
 
 // Egen route för att posta feedback - anropas från App.js
 router.post('/feedback', (req, res) => {
@@ -40,7 +43,7 @@ router.post('/feedback', (req, res) => {
     })
     feedbackStorage.instantIndex(post.dsid);  // Trigga indexering av posten
 
-    // Skicka mail när feedback skickats TODO: Plocka upp mail från config
+    // Skicka mail när feedback skickats
     const mailBuilder = mailUtil.getMailBuilder();
     const mailInput = appData.get('email');
     const mail = mailBuilder
@@ -50,11 +53,27 @@ router.post('/feedback', (req, res) => {
         .build();
     mail.send();
 
-    res.json({post});  // Svaret skickas med
+    res.json({post});
 });
 
+// Middleware för att bara admin admin-användare skall se tidigare feedback
+router.use((req, res, next) => {
+    if (req.method === 'GET' && req.path === '/feedback') {
+        const roleMatcherBuilder = roleUtil.getRoleMatcherBuilder(); 
+        roleMatcherBuilder.setUser(currentUser); 
+        roleMatcherBuilder.addRole(roleUtil.getRoleByName('Administrator')); 
+        const roleMatcher = roleMatcherBuilder.build(); 
+        const isAdmin = roleMatcher.matchesAny(currentPage); 
+        if (isAdmin) { 
+            next();  // Släpp bara vidare admins till GET anrop mot /feedback
+        }
+    } else {
+        next();  // Släpp förbi övriga anrop som att posta feedback. Appen blockar anonyma.
+    }
+});
+ 
 
-// Hämta sidans tidigare feedback. Vaktas av att App.js avslutar direkt om man inte är inloggad.
+// Hämta sidans tidigare feedback.
 router.get('/feedback', (req, res) => {
     const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
     const feedbackEntries = feedbackStorage.find(`ds.analyzed.page:${currentPageID}`,100).toArray(); 
