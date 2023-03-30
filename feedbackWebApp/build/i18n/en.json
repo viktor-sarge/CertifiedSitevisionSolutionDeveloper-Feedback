@@ -1,5 +1,12 @@
 {
-  "hello": "Hello",
   "settings": "Settings",
-  "email": "Email"
+  "email": "Email",
+  "leaveFeedback": "Got feedback?",
+  "feedbackFormText": "Write it here!",
+  "send": "Send",
+  "sent": "Sent!",
+  "thanks": "Thank you for your feedback!",
+  "notInEditView": "Feedback can only be sent in the view mode",
+  "currentVersion": "Current",
+  "oldVersion": "Older feedback"
 }

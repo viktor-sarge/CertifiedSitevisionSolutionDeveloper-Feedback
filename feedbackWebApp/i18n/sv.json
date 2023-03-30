@@ -1,5 +1,12 @@
 {
-  "hello": "Hej",
   "settings": "Inställningar",
-  "email": "E-post"
+  "email": "E-post",
+  "leaveFeedback": "Har du feedback?",
+  "feedbackFormText": "Lämna dem här!",
+  "send": "Skicka",
+  "sent": "Skickat!",
+  "thanks": "Tack för din feedback!",
+  "notInEditView": "Feedbackmodulen kan bara användas i visningsläget",
+  "currentVersion": "Aktuell version",
+  "oldVersion": "Äldre feedback"
 }

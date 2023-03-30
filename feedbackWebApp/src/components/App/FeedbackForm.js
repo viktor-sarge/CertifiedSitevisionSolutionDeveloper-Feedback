@@ -1,6 +1,9 @@
 import * as React from 'react';
 import styles from './App.scss';
 
+// Sitevisions intrantionalization-funktioner
+import i18n from "@sitevision/api/common/i18n";
+
 const FeedbackForm = ({handleSubmit}) => {
     const textareaRef = React.useRef(null); // create a ref to the textarea element
 
@@ -16,12 +19,12 @@ const FeedbackForm = ({handleSubmit}) => {
                 <div class="env-form__row">
                     <div class="env-form-element">
                         <label for="textarea" class="env-form-element__label">
-                            Lämna feedback
+                            { i18n.get('leaveFeedback') }
                         </label>
                         <div class="env-form-element__control">
                             <textarea
                                 class="env-form-input"
-                                placeholder="Placeholder text"
+                                placeholder={ i18n.get('feedbackFormText') }
                                 id="textarea"
                                 rows="3"
                                 ref={textareaRef} // set the ref to the textarea element
@@ -31,7 +34,7 @@ const FeedbackForm = ({handleSubmit}) => {
                 </div>
                 <div class="env-form-element">
                     <button type="submit" class="env-button env-button--primary">
-                        Skicka
+                    { i18n.get('send') }
                     </button>
                 </div>
             </form>

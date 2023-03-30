@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import FeedbackForm from './FeedbackForm';
 
 // Sitevisionspecifika importer
+import i18n from "@sitevision/api/common/i18n";
 import requester from "@sitevision/api/client/requester";
 import router from "@sitevision/api/common/router";
 import toasts from "@sitevision/api/client/toasts"; 
@@ -27,7 +28,7 @@ const App = ({ currentVersion, anonymous }) => {
         }).then(()=>{
             // Visuell bekräftelse genom en toast
             toasts.publish({ 
-                message: `Skickat.`, 
+                message: i18n.get('sent'), 
                 type: "success", 
                 ttl: 3, 
             }); 
@@ -65,9 +66,9 @@ const App = ({ currentVersion, anonymous }) => {
             {/* Visa feedback-form om vi är i visningsläge och inte redan skickat in */}
             {currentVersion 
                 ?   (feedbackSent 
-                        ? (<div>Tack för din feedback!</div>) 
+                        ? (<div>{ i18n.get('thanks')}</div>) 
                         : <FeedbackForm handleSubmit={handleSubmit} />) 
-                : <div>Feedbackmodulen kan bara användas i visningsläget</div>
+                : <div>{ i18n.get('notInEditView')}</div>
             }
 
             {/* Tidigare feedbackposte */}
@@ -84,8 +85,8 @@ const App = ({ currentVersion, anonymous }) => {
                                     {formatDate(entry.timePosted)}
                                 </p>
                                 {entry.current 
-                                    ? <p class="env-ui-text-caption env-status-badge env-status-badge--active">Aktuell version</p> 
-                                    : <p class="env-ui-text-caption env-status-badge">Äldre version</p>
+                                    ? <p class="env-ui-text-caption env-status-badge env-status-badge--active">{ i18n.get('currentVersion')}</p> 
+                                    : <p class="env-ui-text-caption env-status-badge">{ i18n.get('oldVersion')}</p>
                                 }
                             </div>
                         </article>
