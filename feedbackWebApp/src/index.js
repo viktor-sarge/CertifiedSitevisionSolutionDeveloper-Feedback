@@ -9,6 +9,7 @@ import App from './components/App';
 import appData from '@sitevision/api/server/appData';
 import mailUtil from '@sitevision/api/server/MailUtil';
 import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
+import properties from '@sitevision/api/server/Properties';
 import roleUtil from '@sitevision/api/server/RoleUtil';
 import router from '@sitevision/api/common/router';
 import storage  from '@sitevision/api/server/storage';
@@ -26,7 +27,9 @@ const anonymous = systemUserUtil.isAnonymous();
 // Referenser till aktuell sida, dess id och aktuell användare
 const currentPage = portletContextUtil.getCurrentPage();
 const currentPageID = currentPage.getIdentifier();
-const currentUser = portletContextUtil.getCurrentUser(); 
+const currentUser = portletContextUtil.getCurrentUser();
+const currentPageName = currentPage.getName();
+const currentPageUrl = properties.get(currentPageID, 'URL');
 
 // Egen route för att posta feedback - anropas från App.js
 router.post('/feedback', (req, res) => {
@@ -48,7 +51,7 @@ router.post('/feedback', (req, res) => {
     const mailInput = appData.get('email');
     const mail = mailBuilder
         .setSubject(`Feedback was published `)
-        .setHtmlMessage(`Someone published published`)
+        .setHtmlMessage(`${currentUser} commented on the page <a href='${currentPageUrl}'>${currentPageName}</a>`)
         .addRecipient(mailInput)
         .build();
     mail.send();
