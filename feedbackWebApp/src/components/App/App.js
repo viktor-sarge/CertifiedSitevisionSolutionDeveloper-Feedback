@@ -22,6 +22,20 @@ const App = ({ currentVersion, anonymous }) => {
     const [feedbackSent, setFeedbackSent] = useState(false);
     const [previousFeedback, setPreviousFeedback] = useState([]);
 
+    // Funktion för att hämta tidigare feedback
+    const getPreviousFeedback = () => {
+        requester.doGet({
+            url: router.getStandaloneUrl("/feedback"),
+            data: {}
+        })
+        .then((previousFeedback)=>{
+            setPreviousFeedback(previousFeedback.feedbackEntries)
+        })
+        .catch(()=>{
+            console.log("Ett fel uppstod. Normalt vid omladdning av appen under utveckling. Felsök om detta visas under normal användning.")
+        });
+    }
+
     // Slussa feedback från formulär till /feedback-routen i index.js
     const handleSubmit = (text) => {
         requester["doPost"]({
@@ -34,22 +48,14 @@ const App = ({ currentVersion, anonymous }) => {
                 type: "success", 
                 ttl: 3, 
             }); 
+            getPreviousFeedback();
         })
         setFeedbackSent(true); // Styr vilket gränssnitt som visas
     }
 
     // Ladda tidigare feedback från route i index.js
     useEffect(()=>{
-        requester.doGet({
-            url: router.getStandaloneUrl("/feedback"),
-            data: {}
-        })
-        .then((previousFeedback)=>{
-            setPreviousFeedback(previousFeedback.feedbackEntries)
-        })
-        .catch(()=>{
-            console.log("Ett fel uppstod. Normalt vid omladdning av appen under utveckling. Felsök om detta visas under normal användning.")
-        });
+        getPreviousFeedback();
     }, [])
 
     // Timestamps till klartexttid

@@ -9,6 +9,7 @@
 		"timestamp",
 		"middleware",
 		"translations",
-		"manifest"
+		"manifest",
+		"updates"
 	]
 }
