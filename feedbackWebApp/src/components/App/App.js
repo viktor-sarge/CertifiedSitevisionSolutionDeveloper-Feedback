@@ -53,10 +53,16 @@ const App = ({ currentVersion, anonymous }) => {
         setFeedbackSent(true); // Styr vilket gränssnitt som visas
     }
 
-    // Ladda tidigare feedback från route i index.js
-    useEffect(()=>{
+    // Ladda tidigare feedback från route i index.js + polla efter ny feeback
+    useEffect(() => {
         getPreviousFeedback();
-    }, [])
+      
+        const intervalId = setInterval(() => {
+          getPreviousFeedback();
+        }, 15000);
+      
+        return () => clearInterval(intervalId);
+      }, []);
 
     // Timestamps till klartexttid
     const formatDate = (unixTimestamp) => {
