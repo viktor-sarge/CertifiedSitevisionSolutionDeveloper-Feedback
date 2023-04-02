@@ -1,6 +1,6 @@
 {
   "settings": "Settings",
-  "email": "Email",
+  "email": "Email to notify about new feedback",
   "leaveFeedback": "Got feedback?",
   "feedbackFormText": "Write it here!",
   "send": "Send",
