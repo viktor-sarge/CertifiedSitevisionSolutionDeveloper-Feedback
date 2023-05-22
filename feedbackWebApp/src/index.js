@@ -31,6 +31,14 @@ const currentUser = portletContextUtil.getCurrentUser();
 const currentPageName = currentPage.getName();
 const currentPageUrl = properties.get(currentPageID, 'URL');
 
+// middleware that will be executed every time the app recives a request
+router.use((req, res, next) => {
+    if (req.method === 'POST') {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    next();
+ });
+
 // Egen route för att posta feedback - anropas från App.js
 router.post('/feedback', (req, res) => {
     const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
@@ -42,7 +50,7 @@ router.post('/feedback', (req, res) => {
         page: currentPageID,
         current: true,
         timePosted: Date.now(),
-        user: String(currentUser),
+        user: currentUser.getIdentifier(),
     })
     feedbackStorage.instantIndex(post.dsid);  // Trigga indexering av posten
 

@@ -91,12 +91,12 @@ const App = ({ currentVersion, anonymous }) => {
                     {previousFeedback.map((entry) => {return(
                         <article class="env-card env-block env-shadow-small">
                             <div class="env-card__body">
-                                <h2 class="env-ui-text-subheading">{entry.user}</h2>
+                                <h2 class="env-ui-text-subheading">{formatDate(entry.timePosted)}</h2>
                                 <p class="env-ui-text-caption env-p-bottom--medium">
                                     {entry.feedback}
                                 </p>
                                 <p class="env-ui-text-caption">
-                                    {formatDate(entry.timePosted)}
+                                    User: {entry.user}
                                 </p>
                                 {entry.current 
                                     ? <p class="env-ui-text-caption env-status-badge env-status-badge--active">{ i18n.get('currentVersion')}</p> 
