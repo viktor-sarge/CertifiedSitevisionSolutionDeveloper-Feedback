@@ -10,6 +10,8 @@ import appData from '@sitevision/api/server/appData';
 import mailUtil from '@sitevision/api/server/MailUtil';
 import portletContextUtil from '@sitevision/api/server/PortletContextUtil';
 import properties from '@sitevision/api/server/Properties';
+import propertyUtil from '@sitevision/api/server/PropertyUtil';
+import resourceLocatorUtil from '@sitevision/api/server/ResourceLocatorUtil';
 import roleUtil from '@sitevision/api/server/RoleUtil';
 import router from '@sitevision/api/common/router';
 import storage  from '@sitevision/api/server/storage';
@@ -31,9 +33,16 @@ const currentUser = portletContextUtil.getCurrentUser();
 const currentPageName = currentPage.getName();
 const currentPageUrl = properties.get(currentPageID, 'URL');
 
+function getUserName(id) {
+    const node = resourceLocatorUtil.getNodeByIdentifier(id);
+    const user = propertyUtil.getString(node, 'displayName');
+    // console.log("ID: " + id + " User: " + user);
+    return user;
+}
+
 // middleware that will be executed every time the app recives a request
 router.use((req, res, next) => {
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && anonymous) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
     next();
@@ -87,8 +96,12 @@ router.use((req, res, next) => {
 // Hämta sidans tidigare feedback.
 router.get('/feedback', (req, res) => {
     const feedbackStorage = storage.getCollectionDataStore("feedback");  // Hämta/skapa datakälla i SV
-    const feedbackEntries = feedbackStorage.find(`ds.analyzed.page:${currentPageID}`,100).toArray(); 
-    res.json({feedbackEntries});  // Svaret skickas med
+    const feedbackEntries = feedbackStorage.find(`ds.analyzed.page:${currentPageID}`,100).toArray();
+    const processedEntries = feedbackEntries.map(obj => ({
+         ...obj,
+         name: getUserName(obj.user)
+    }));
+    res.json({processedEntries});  // Svaret skickas med
 });
 
 // Appens standardentrypoint

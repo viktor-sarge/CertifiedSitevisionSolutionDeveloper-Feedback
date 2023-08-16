@@ -29,7 +29,7 @@ const App = ({ currentVersion, anonymous }) => {
             data: {}
         })
         .then((previousFeedback)=>{
-            setPreviousFeedback(previousFeedback.feedbackEntries)
+            setPreviousFeedback(previousFeedback.processedEntries)
         })
         .catch(()=>{
             console.log("Ett fel uppstod. Normalt vid omladdning av appen under utveckling. Felsök om detta visas under normal användning.")
@@ -96,7 +96,7 @@ const App = ({ currentVersion, anonymous }) => {
                                     {entry.feedback}
                                 </p>
                                 <p class="env-ui-text-caption">
-                                    User: {entry.user}
+                                    User: {entry.name}
                                 </p>
                                 {entry.current 
                                     ? <p class="env-ui-text-caption env-status-badge env-status-badge--active">{ i18n.get('currentVersion')}</p> 
